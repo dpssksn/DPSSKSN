@@ -1,0 +1,8 @@
+{
+  "id": "admin-1",
+  "email": "admin@dpssksn.edu.in",
+  "name": "Headmaster & Admin Secretariat",
+  "passwordHash": "$2b$10$H/WN1QA0FsQlbosh5RmIEe8U0vAy63GSBPAQ8rVZWuDIduc1w8Jv2",
+  "role": "superadmin",
+  "lastLogin": "2026-08-31T04:07:58.304Z"
+}

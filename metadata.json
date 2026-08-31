@@ -1,0 +1,6 @@
+{
+  "name": "Deshbandhu Palli Seva Sangha Santosh Kumari Siksha Niketan",
+  "description": "Official website and notice board portal for Deshbandhu Palli Seva Sangha Santosh Kumari Siksha Niketan with public notices, academics, gallery, and secure administrative notice management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
