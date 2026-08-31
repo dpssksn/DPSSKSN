@@ -47,6 +47,7 @@ import {
   SchoolMediaData
 } from '../types';
 import { SchoolLogo, notifyLogoUpdated } from './SchoolLogo';
+import { schoolBuildingImg } from '../assets/images';
 import { 
   loginAdmin, 
   logoutAdmin, 
@@ -1254,11 +1255,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     : 'text-slate-700 hover:bg-slate-100'
                 }`}
               >
-                <Camera className="w-4 h-4" />
-                <span>2. Homepage Hero Banner</span>
-                {heroPhoto?.url && (
-                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                )}
+                <Lock className="w-4 h-4 text-amber-500" />
+                <span>2. Homepage Background (Locked)</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
               </button>
 
               <button
@@ -1427,7 +1426,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             )}
 
             {/* --------------------------------------------------------- */}
-            {/* SUBTAB 2: HERO BANNER & MAIN SCHOOL BUILDING PHOTO */}
+            {/* SUBTAB 2: HERO BANNER & MAIN SCHOOL BUILDING PHOTO (LOCKED) */}
             {/* --------------------------------------------------------- */}
             {mediaActiveSubTab === 'hero' && (
               <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6 animate-fade-in">
@@ -1435,107 +1434,65 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <div>
                     <h2 className="text-xl font-bold text-blue-950 font-serif flex items-center gap-2">
                       <Camera className="w-5 h-5 text-blue-900" />
-                      Homepage Hero Banner & Main Campus Photo
+                      Homepage Hero Banner & Main Campus Background (Permanently Locked)
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                      This large photograph is featured prominently on the top homepage hero section welcoming all visitors.
+                      The official high-resolution photograph of the institutional campus building is permanently locked as the active homepage visual across all devices.
                     </p>
                   </div>
 
-                  {heroPhoto?.url && (
-                    <button
-                      onClick={handleRemoveHeroPhoto}
-                      disabled={uploadingHero}
-                      className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 shrink-0"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      <span>Reset to Default Campus Photo</span>
-                    </button>
-                  )}
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-900 border border-amber-300 text-xs font-bold shrink-0 shadow-sm">
+                    <Lock className="w-4 h-4 text-amber-600" />
+                    <span>Background Permanently Locked</span>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                  <div className="lg:col-span-6 bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
-                    <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Live Homepage Preview</p>
-                    <div className="relative aspect-video rounded-xl overflow-hidden shadow border border-slate-200 bg-slate-200">
+                  <div className="lg:col-span-7 bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Active Campus Photograph</p>
+                      <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Permanent & Active
+                      </span>
+                    </div>
+                    <div className="relative aspect-video rounded-xl overflow-hidden shadow-md border border-slate-300 bg-slate-950 group">
                       <img 
-                        src={heroPhoto?.url || '/src/assets/images/regenerated_image_1788152444999.jpg'} 
+                        src={schoolBuildingImg} 
                         alt="Hero School Campus" 
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                       />
-                      <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-blue-950/90 via-blue-950/40 to-transparent p-3 text-white">
-                        <p className="text-xs font-bold">{heroPhoto?.caption || 'D.P.S. Sikkho Niketan Main Academic Building'}</p>
-                        <p className="text-[10px] text-blue-200">Affiliated to WBCHSE & WBBSE</p>
+                      <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent p-4 text-white">
+                        <p className="text-xs font-bold">Deshbandhu Palli Seva Sangha Santosh Kumari Siksha Niketan</p>
+                        <p className="text-[10px] text-amber-300 font-medium">Main Academic Building & Campus • ESTD 1968</p>
                       </div>
-                    </div>
-                    <div className="text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200">
-                      <p className="font-semibold text-blue-950">Status: {heroPhoto?.url ? 'Custom Campus Banner Active' : 'Default Academic Campus Photograph'}</p>
                     </div>
                   </div>
 
-                  <div className="lg:col-span-6 space-y-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                        Upload School Photo File from Computer / Mobile
-                      </label>
-                      <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-blue-300 hover:border-blue-700 bg-blue-50/40 rounded-2xl cursor-pointer transition-colors text-center">
-                        <Upload className="w-8 h-8 text-blue-900 mb-2" />
-                        <span className="text-xs font-bold text-blue-950">
-                          {uploadingHero ? 'Uploading & Processing Image...' : 'Click to Browse & Upload Hero Photo'}
-                        </span>
-                        <span className="text-[11px] text-slate-500 mt-1">Supports JPG, PNG, WEBP (Max 15MB)</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleHeroFileUpload}
-                          disabled={uploadingHero}
-                          className="hidden"
-                        />
-                      </label>
-                    </div>
-
-                    <div className="relative flex py-1 items-center">
-                      <div className="flex-grow border-t border-slate-200"></div>
-                      <span className="flex-shrink mx-4 text-xs font-semibold text-slate-400 uppercase">Or Provide Direct URL</span>
-                      <div className="flex-grow border-t border-slate-200"></div>
-                    </div>
-
-                    <form onSubmit={handleUpdateHeroUrl} className="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">
-                          Image Direct URL
-                        </label>
-                        <input
-                          type="url"
-                          value={heroUrlInput}
-                          onChange={(e) => setHeroUrlInput(e.target.value)}
-                          placeholder="https://example.com/school-building.jpg"
-                          className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-blue-900"
-                        />
+                  <div className="lg:col-span-5 space-y-4">
+                    <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                      <div className="flex items-center gap-2 text-slate-900 font-bold text-xs uppercase tracking-wider">
+                        <Lock className="w-4 h-4 text-amber-600" />
+                        <span>Institutional Lock Policy</span>
                       </div>
-
-                      <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1">
-                          Caption / Sub-title
-                        </label>
-                        <input
-                          type="text"
-                          value={heroCaptionInput}
-                          onChange={(e) => setHeroCaptionInput(e.target.value)}
-                          placeholder="Main Academic Building & Campus"
-                          className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:ring-2 focus:ring-blue-900"
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={uploadingHero || !heroUrlInput.trim()}
-                        className="px-5 py-2.5 bg-blue-950 hover:bg-blue-900 text-white rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow"
-                      >
-                        {uploadingHero ? 'Saving...' : 'Apply Hero Photo via URL'}
-                      </button>
-                    </form>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        To preserve consistent institutional identity across desktop monitors, mobile devices, and official deployments, the official campus background is permanently locked.
+                      </p>
+                      <ul className="text-xs text-slate-600 space-y-2 pt-2 border-t border-slate-200">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <span><strong>Desktop Displays:</strong> High-resolution 16:9 campus photograph backdrop.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <span><strong>Mobile Viewports:</strong> Custom 9:16 portrait background with embossed emblem and Bengali motto.</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                          <span><strong>GitHub Pages & Server:</strong> Embedded into static project assets so it never expires, breaks, or requires configuration.</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1574,7 +1531,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">Live About Section Preview</p>
                     <div className="relative aspect-4/3 rounded-xl overflow-hidden shadow border border-slate-200 bg-slate-200">
                       <img 
-                        src={aboutPhoto?.url || '/src/assets/images/regenerated_image_1788152444999.jpg'} 
+                        src={aboutPhoto?.url || schoolBuildingImg} 
                         alt="About Section Building" 
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"

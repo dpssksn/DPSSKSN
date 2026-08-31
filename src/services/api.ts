@@ -209,14 +209,19 @@ function setStoredNotices(notices: Notice[]): void {
   }
 }
 
-function getStoredMedia(): SchoolMediaData {
+export function getStoredMedia(): SchoolMediaData {
   try {
     const raw = localStorage.getItem('dpss_cached_media');
     if (raw) {
       const parsed = JSON.parse(raw);
       return {
         logoPhoto: parsed.logoPhoto || null,
-        heroPhoto: parsed.heroPhoto || null,
+        heroPhoto: parsed.heroPhoto || {
+          url: "/uploads/1788151728404-523339414-WhatsApp_Image_2026-08-31_at_9.43.06_AM.jpeg",
+          caption: "Official Campus Photograph",
+          updatedAt: "2026-08-31T04:48:48.599Z",
+          updatedBy: "dpssksn@gmail.com"
+        },
         aboutPhoto: parsed.aboutPhoto || null,
         facilityPhotos: parsed.facilityPhotos || null,
         galleryPhotos: Array.isArray(parsed.galleryPhotos) ? parsed.galleryPhotos : [],
@@ -227,18 +232,26 @@ function getStoredMedia(): SchoolMediaData {
   }
   return {
     logoPhoto: null,
-    heroPhoto: null,
+    heroPhoto: {
+      url: "/uploads/1788151728404-523339414-WhatsApp_Image_2026-08-31_at_9.43.06_AM.jpeg",
+      caption: "Official Campus Photograph",
+      updatedAt: "2026-08-31T04:48:48.599Z",
+      updatedBy: "dpssksn@gmail.com"
+    },
     aboutPhoto: null,
     facilityPhotos: null,
     galleryPhotos: [],
   };
 }
 
-function setStoredMedia(media: SchoolMediaData): void {
+export function setStoredMedia(media: SchoolMediaData): void {
   try {
     localStorage.setItem('dpss_cached_media', JSON.stringify(media));
   } catch (e) {
     // ignore
+  }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('dpss_media_updated', { detail: media }));
   }
 }
 

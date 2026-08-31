@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Image as ImageIcon, 
   X, 
@@ -18,6 +18,8 @@ import {
   AlpanaDivider, 
   MandalaEmblem 
 } from './IndianArtDecorations';
+import { fetchSchoolPhotos, getStoredMedia } from '../services/api';
+import { GalleryPhotoData, SchoolMediaData } from '../types';
 
 interface GalleryItem {
   id: string;
@@ -98,12 +100,55 @@ const GALLERY_ITEMS: GalleryItem[] = [
 export const GallerySection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [customPhotos, setCustomPhotos] = useState<GalleryPhotoData[]>(() => {
+    try {
+      const stored = getStoredMedia();
+      return Array.isArray(stored?.galleryPhotos) ? stored.galleryPhotos : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    fetchSchoolPhotos()
+      .then((data) => {
+        if (data && Array.isArray(data.galleryPhotos)) {
+          setCustomPhotos(data.galleryPhotos);
+        }
+      })
+      .catch(() => {
+        // Fallback safely
+      });
+
+    const handleMediaUpdated = (e: Event) => {
+      const customEvent = e as CustomEvent<SchoolMediaData>;
+      if (customEvent.detail && Array.isArray(customEvent.detail.galleryPhotos)) {
+        setCustomPhotos(customEvent.detail.galleryPhotos);
+      }
+    };
+
+    window.addEventListener('dpss_media_updated', handleMediaUpdated);
+    return () => window.removeEventListener('dpss_media_updated', handleMediaUpdated);
+  }, []);
+
+  const allGalleryItems = useMemo<GalleryItem[]>(() => {
+    const formattedCustom: GalleryItem[] = customPhotos.map((cp) => ({
+      id: cp.id,
+      title: cp.title || 'Official Campus Archive',
+      category: (cp.category as any) || 'Campus',
+      imageUrl: cp.url,
+      caption: cp.caption || 'Institutional photo chronicle archive.',
+      date: cp.date || 'Recent Event',
+    }));
+
+    return [...formattedCustom, ...GALLERY_ITEMS];
+  }, [customPhotos]);
 
   const categories = ['All', 'Campus', 'Sports', 'Cultural', 'Science & Events'];
 
   const filtered = selectedCategory === 'All'
-    ? GALLERY_ITEMS
-    : GALLERY_ITEMS.filter((item) => item.category === selectedCategory);
+    ? allGalleryItems
+    : allGalleryItems.filter((item) => item.category === selectedCategory);
 
   const handleOpenLightbox = (index: number) => {
     setLightboxIndex(index);

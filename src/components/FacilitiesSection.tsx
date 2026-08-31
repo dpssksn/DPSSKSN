@@ -23,12 +23,19 @@ import {
   CornerFlourish, 
   MandalaEmblem 
 } from './IndianArtDecorations';
-import { fetchSchoolPhotos } from '../services/api';
-import { FacilityPhotosData } from '../types';
+import { fetchSchoolPhotos, getStoredMedia } from '../services/api';
+import { FacilityPhotosData, SchoolMediaData } from '../types';
 
 export const FacilitiesSection: React.FC = () => {
   const [selectedFacility, setSelectedFacility] = useState<number | null>(null);
-  const [customFacilities, setCustomFacilities] = useState<FacilityPhotosData>({});
+  const [customFacilities, setCustomFacilities] = useState<FacilityPhotosData>(() => {
+    try {
+      const stored = getStoredMedia();
+      return stored?.facilityPhotos || {};
+    } catch {
+      return {};
+    }
+  });
 
   useEffect(() => {
     fetchSchoolPhotos()
@@ -40,6 +47,16 @@ export const FacilitiesSection: React.FC = () => {
       .catch(() => {
         // Fallback safely to default facility illustrations
       });
+
+    const handleMediaUpdated = (e: Event) => {
+      const customEvent = e as CustomEvent<SchoolMediaData>;
+      if (customEvent.detail?.facilityPhotos) {
+        setCustomFacilities(customEvent.detail.facilityPhotos);
+      }
+    };
+
+    window.addEventListener('dpss_media_updated', handleMediaUpdated);
+    return () => window.removeEventListener('dpss_media_updated', handleMediaUpdated);
   }, []);
 
   const facilities = [

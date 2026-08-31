@@ -13,8 +13,8 @@ import {
   Quote,
   Flame
 } from 'lucide-react';
-import { Notice, HeroPhotoData } from '../types';
-import { fetchSchoolPhotos } from '../services/api';
+import { Notice, HeroPhotoData, SchoolMediaData } from '../types';
+import { fetchSchoolPhotos, getStoredMedia } from '../services/api';
 import { SchoolLogo } from './SchoolLogo';
 import { schoolBuildingImg, schoolEmblemImg, mobileHeroBgImg } from '../assets/images';
 import { 
@@ -39,18 +39,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onContactClick,
 }) => {
   const breakingNotice = latestNotices[0] || null;
-  const [heroPhoto, setHeroPhoto] = useState<HeroPhotoData | null>(null);
+  const [heroPhoto, setHeroPhoto] = useState<HeroPhotoData | null>(() => {
+    try {
+      const stored = getStoredMedia();
+      return stored?.heroPhoto || null;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => {
+    // Sync with persistent database/backend on every load
     fetchSchoolPhotos()
       .then((data) => {
-        if (data && data.heroPhoto) {
-          setHeroPhoto(data.heroPhoto);
-        }
+        setHeroPhoto(data?.heroPhoto || null);
       })
       .catch(() => {
-        // Safe graceful fallback to default campus visual
+        // Safe graceful fallback to persistent storage
       });
+
+    const handleMediaUpdated = (e: Event) => {
+      const customEvent = e as CustomEvent<SchoolMediaData>;
+      if (customEvent.detail !== undefined) {
+        setHeroPhoto(customEvent.detail?.heroPhoto || null);
+      }
+    };
+
+    window.addEventListener('dpss_media_updated', handleMediaUpdated);
+    return () => window.removeEventListener('dpss_media_updated', handleMediaUpdated);
   }, []);
 
   return (
@@ -101,7 +117,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div 
           className="hidden sm:block absolute inset-0 bg-cover bg-center bg-no-repeat z-0 transform transition-transform duration-1000 scale-[1.01]"
           style={{
-            backgroundImage: `url(${heroPhoto?.url || schoolBuildingImg})`,
+            backgroundImage: `url(${schoolBuildingImg})`,
           }}
         />
 
@@ -230,7 +246,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   {/* Photo Display: Shows Owner Attached Photo or Official Building Visual with Antique Embossed Seal */}
                   <div className="relative rounded-xl overflow-hidden border-2 border-amber-500/40 bg-slate-950 aspect-[4/3] group shadow-2xl">
                     <img
-                      src={heroPhoto?.url || schoolBuildingImg}
+                      src={schoolBuildingImg}
                       alt="Official School Campus Photograph - Deshbandhu Palli Seva Sangha Santosh Kumari Siksha Niketan"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                       loading="eager"

@@ -90,12 +90,17 @@ function initializeDatabase() {
   });
   console.log("Initialized official owner admin account:", defaultEmail);
 
-  // Photos setup - start empty so only owner attached photos appear
-  const existingPhotos = readJSON(PHOTOS_FILE, null);
-  if (!existingPhotos) {
+  // Photos setup - lock with official campus background photo
+  const existingPhotos = readJSON<any>(PHOTOS_FILE, null);
+  if (!existingPhotos || !existingPhotos.heroPhoto) {
     writeJSON(PHOTOS_FILE, {
-      heroPhoto: null,
-      galleryPhotos: [],
+      heroPhoto: existingPhotos?.heroPhoto || {
+        url: "/uploads/1788151728404-523339414-WhatsApp_Image_2026-08-31_at_9.43.06_AM.jpeg",
+        caption: "Official Campus Photograph",
+        updatedAt: "2026-08-31T04:48:48.599Z",
+        updatedBy: "dpssksn@gmail.com"
+      },
+      galleryPhotos: existingPhotos?.galleryPhotos || [],
     });
   }
 

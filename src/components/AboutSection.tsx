@@ -14,8 +14,8 @@ import {
   Compass,
   Image as ImageIcon
 } from 'lucide-react';
-import { fetchSchoolPhotos } from '../services/api';
-import { HeroPhotoData } from '../types';
+import { fetchSchoolPhotos, getStoredMedia } from '../services/api';
+import { HeroPhotoData, SchoolMediaData } from '../types';
 import { SchoolLogo } from './SchoolLogo';
 import { schoolBuildingImg, somnathPalImg } from '../assets/images';
 import { 
@@ -26,18 +26,35 @@ import {
 
 export const AboutSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'history' | 'ethos' | 'committee' | 'faculty'>('history');
-  const [schoolPhoto, setSchoolPhoto] = useState<HeroPhotoData | null>(null);
+  const [schoolPhoto, setSchoolPhoto] = useState<HeroPhotoData | null>(() => {
+    try {
+      const stored = getStoredMedia();
+      return stored?.aboutPhoto || stored?.heroPhoto || null;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => {
     fetchSchoolPhotos()
       .then((data) => {
-        if (data && (data.aboutPhoto || data.heroPhoto)) {
-          setSchoolPhoto(data.aboutPhoto || data.heroPhoto);
+        if (data) {
+          setSchoolPhoto(data.aboutPhoto || data.heroPhoto || null);
         }
       })
       .catch(() => {
         // Fallback safely to default building visual
       });
+
+    const handleMediaUpdated = (e: Event) => {
+      const customEvent = e as CustomEvent<SchoolMediaData>;
+      if (customEvent.detail !== undefined) {
+        setSchoolPhoto(customEvent.detail?.aboutPhoto || customEvent.detail?.heroPhoto || null);
+      }
+    };
+
+    window.addEventListener('dpss_media_updated', handleMediaUpdated);
+    return () => window.removeEventListener('dpss_media_updated', handleMediaUpdated);
   }, []);
 
   const facultyMembers = [
@@ -171,7 +188,7 @@ export const AboutSection: React.FC = () => {
               <div className="lg:col-span-6">
                 <div className="relative rounded-2xl overflow-hidden shadow-xl border-2 border-blue-300 aspect-[4/3] group bg-blue-950">
                   <img
-                    src={schoolPhoto?.url || schoolBuildingImg}
+                    src={schoolBuildingImg}
                     alt="School Building of Deshbandhu Palli Seva Sangha Santosh Kumari Siksha Niketan"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"
