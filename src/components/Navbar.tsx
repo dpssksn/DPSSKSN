@@ -60,26 +60,26 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white shadow-md transition-all border-b border-blue-200">
-      {/* Top Institutional Utility Bar */}
-      <div className="bg-blue-950 text-slate-100 text-xs py-1.5 px-4 border-b border-blue-900">
+      {/* Top Institutional Utility Bar with Clean Light Aesthetic */}
+      <div className="bg-slate-100 text-slate-700 text-xs py-1.5 px-4 border-b border-slate-200">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           
           {/* Official Contact & Timing */}
           <div className="flex flex-wrap items-center gap-4 text-xs font-medium">
-            <div className="flex items-center gap-1.5 text-blue-100 hover:text-white transition-colors">
-              <Mail className="w-3.5 h-3.5 text-blue-300" />
+            <div className="flex items-center gap-1.5 text-blue-900 hover:text-blue-950 transition-colors font-semibold">
+              <Mail className="w-3.5 h-3.5 text-blue-700" />
               <a href="mailto:dpssksn@gmail.com" className="font-mono text-xs">dpssksn@gmail.com</a>
             </div>
-            <div className="hidden sm:flex items-center gap-1.5 text-slate-300">
-              <Clock className="w-3.5 h-3.5 text-blue-300" />
+            <div className="hidden sm:flex items-center gap-1.5 text-slate-600 font-medium">
+              <Clock className="w-3.5 h-3.5 text-blue-700" />
               <span>Office: 10:30 AM - 4:30 PM (Mon - Sat)</span>
             </div>
           </div>
 
           {/* Affiliation Badges & Administrative Portal */}
           <div className="flex items-center gap-3">
-            <span className="hidden md:inline-flex items-center gap-1 bg-white/10 text-white px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-white/20">
-              <Sparkles className="w-3 h-3 text-blue-200" />
+            <span className="hidden md:inline-flex items-center gap-1 bg-blue-50 text-blue-950 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border border-blue-200">
+              <Sparkles className="w-3 h-3 text-blue-700" />
               Govt. Sponsored • WBBSE & WBCHSE Affiliated
             </span>
             
@@ -89,10 +89,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={onAdminClick}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-all font-medium border ${
                 adminUser
-                  ? 'bg-emerald-800 border-emerald-400 text-white hover:bg-emerald-700'
-                  : 'bg-white text-blue-950 border-white hover:bg-blue-50 font-bold shadow-sm'
+                  ? 'bg-emerald-700 border-emerald-500 text-white hover:bg-emerald-600'
+                  : 'bg-white text-blue-950 border-slate-300 hover:bg-slate-50 font-bold shadow-xs'
               }`}
-              title={adminUser ? 'Open Admin Control Panel' : 'School Administrative Portal'}
+              title={adminUser ? 'Open Admin Control Panel' : 'School Admin Portal'}
             >
               {adminUser ? (
                 <>
@@ -102,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               ) : (
                 <>
                   <Lock className="w-3 h-3 text-blue-900" />
-                  <span>Staff Portal</span>
+                  <span>Admin Portal</span>
                 </>
               )}
             </button>
@@ -157,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Desktop Main Navigation Bar in Royal Blue and Crisp White */}
-      <nav className="hidden md:block bg-blue-950 text-white px-4 border-b border-blue-900 shadow-md">
+      <nav className="hidden md:block bg-blue-900 text-white px-4 border-b border-blue-800 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <ul className="flex items-center space-x-1 py-1.5">
             {navItems.map((item) => {
@@ -171,7 +171,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className={`relative flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs lg:text-sm font-semibold transition-all cursor-pointer ${
                       isActive
                         ? 'bg-white text-blue-950 font-bold shadow-md'
-                        : 'text-slate-100 hover:text-white hover:bg-blue-900/80'
+                        : 'text-blue-100 hover:text-white hover:bg-blue-800'
                     }`}
                   >
                     <Icon className={`w-4 h-4 ${isActive ? 'text-blue-900' : 'text-blue-200'}`} />
@@ -204,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileMenuOpen && (
         <div 
           id="mobile-drawer-menu"
-          className="md:hidden bg-blue-950 text-white px-4 py-4 border-b border-blue-800 shadow-2xl space-y-1"
+          className="md:hidden bg-blue-900 text-white px-4 py-4 border-b border-blue-800 shadow-2xl space-y-1"
         >
           <ul className="space-y-1">
             {navItems.map((item) => {
@@ -246,7 +246,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <div className="flex items-center gap-3">
                   <Lock className="w-4 h-4 text-blue-900" />
-                  <span>{adminUser ? 'Authorized Admin Panel' : 'Staff / Admin Portal'}</span>
+                  <span>{adminUser ? 'Authorized Admin Panel' : 'Admin Portal'}</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-blue-900" />
               </button>

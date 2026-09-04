@@ -242,10 +242,10 @@ export const Footer: React.FC<FooterProps> = ({
               id="footer-admin-login-link"
               onClick={onAdminClick}
               className="inline-flex items-center gap-1.5 text-[11px] text-blue-200 hover:text-white transition-colors py-1.5 px-3 rounded-lg hover:bg-blue-900 border border-blue-800 hover:border-blue-400 cursor-pointer"
-              title="Official Staff and Administration Login"
+              title="Official Administration Login"
             >
               <Lock className="w-3 h-3 text-blue-300" />
-              <span className="font-medium">{adminUser ? 'Admin Portal Active' : 'Staff Portal'}</span>
+              <span className="font-medium">{adminUser ? 'Admin Portal Active' : 'Admin Portal'}</span>
             </button>
           </div>
         </div>

@@ -88,19 +88,24 @@ export const MandalaEmblem: React.FC<{ className?: string; size?: number; color?
   </svg>
 );
 
-export const TerracottaArchFrame: React.FC<{ children: React.ReactNode; className?: string }> = ({
+export const TerracottaArchFrame: React.FC<{ 
+  children: React.ReactNode; 
+  className?: string;
+  innerClassName?: string;
+}> = ({
   children,
-  className = ''
+  className = '',
+  innerClassName = 'bg-white'
 }) => (
-  <div className={`relative p-1 bg-gradient-to-b from-blue-700 via-blue-800 to-slate-900 rounded-3xl shadow-2xl ${className}`}>
-    <div className="relative bg-slate-950 rounded-[22px] overflow-hidden">
+  <div className={`relative p-1 bg-gradient-to-b from-blue-700 via-blue-800 to-blue-900 rounded-3xl shadow-xl ${className}`}>
+    <div className={`relative rounded-[22px] overflow-hidden ${innerClassName}`}>
       {/* Ancient Indian Ornamental Arch Top */}
-      <div className="absolute top-0 inset-x-0 h-4 bg-gradient-to-r from-blue-500/20 via-blue-300/40 to-blue-500/20 border-b border-blue-500/30 flex items-center justify-around px-4">
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-300"></span>
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-300"></span>
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-300"></span>
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-300"></span>
-        <span className="w-1.5 h-1.5 rounded-full bg-blue-300"></span>
+      <div className="absolute top-0 inset-x-0 h-4 bg-gradient-to-r from-blue-500/10 via-amber-400/30 to-blue-500/10 border-b border-amber-300/40 flex items-center justify-around px-4 z-10">
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+        <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+        <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+        <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
       </div>
       {children}
     </div>
